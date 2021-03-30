@@ -4,6 +4,8 @@ import csv
 
 # Identify file for analysis
 PyPoll_file = os.path.join(".", "Resources", "election_data.csv")
+# Identify file for output analysis
+output_file = os.path.join(".", "analysis", "PyPollAnalysis.txt")
 
 # Open csv file
 with open(PyPoll_file, 'r') as csvfile:
@@ -53,10 +55,10 @@ with open(PyPoll_file, 'r') as csvfile:
             num_votes4 += 1
 
     # Find percentage votes
-    percent1 = (num_votes1 / total_votes) * 100
-    percent2 = (num_votes2 / total_votes) * 100
-    percent3 = (num_votes3 / total_votes) * 100
-    percent4 = (num_votes4 / total_votes) * 100
+    percent1 = round((num_votes1 / total_votes) * 100, 2)
+    percent2 = round((num_votes2 / total_votes) * 100, 2)
+    percent3 = round((num_votes3 / total_votes) * 100, 2)
+    percent4 = round((num_votes4 / total_votes) * 100, 2)
 
     # Determine which candidate won
     if percent1 > percent2 and percent1 > percent3 and percent1 > percent4:
@@ -74,26 +76,48 @@ with open(PyPoll_file, 'r') as csvfile:
     print("--------------------")
     print(f"Total Votes: {total_votes}")
     print("--------------------")
-    print(f"{candidate1}: {percent1}%, votes:{num_votes1}")
-    print(f"{candidate2}: {percent2}%, votes:{num_votes2}")
-    print(f"{candidate3}: {percent3}%, votes:{num_votes3}")
-    print(f"{candidate4}: {percent4}%, votes:{num_votes4}")
+    print(f"{candidate1}: {percent1}%, votes: {num_votes1}")
+    print(f"{candidate2}: {percent2}%, votes: {num_votes2}")
+    print(f"{candidate3}: {percent3}%, votes: {num_votes3}")
+    print(f"{candidate4}: {percent4}%, votes: {num_votes4}")
     print("--------------------")
     print(f"Winner: {winner_name}")
-
-    #if candidate1 == "Winner":
-        #print(f"Winner: {candidate1}")
-        #winner_name = candidate1
-    #elif candidate2 == "Winner":
-        #print(f"Winner: {candidate2}")
-        #winner_name = candidate1
-    #elif candidate3 == "Winner":
-        #print(f"Winner: {candidate3}")
-        #winner_name = candidate1
-   # elif candidate4 == "Winner":
-        #print(f"Winner: {candidate4}")
-        #winner_name = candidate1
-    
     print("--------------------")
+
+# Define descriptions for output
+descriptions = ["Khan", "Correy", "Li", "O'Tooley"]
+# Define output values
+num_values = [num_votes1, num_votes2, num_votes3, num_votes4]
+# Define percent output values
+percent_values = [percent1, percent2, percent3, percent4]
+
+summary_desc = ["Total Votes", "Winning Candidate"]
+summary_values = [total_votes, winner_name]
+
+# Zip output values & descriptions together
+clean_output = zip(descriptions, percent_values, num_values)
+clean_output2 = zip(summary_desc, summary_values)
+
+  # Write to output file
+with open(output_file, 'w', newline = '') as new_csv:
+
+    # Write ouput to a file
+    csv_write = csv.writer(new_csv, delimiter=',')
+
+    # Write title row
+    csv_write.writerow(["Summary Election Results:"])
+    
+    # Write summary output rows
+    csv_write.writerows(clean_output2)
+
+    # Write detailed title rows
+    csv_write.writerow(["Detailed Election Results:"])
+    csv_write.writerow(["Candidate", "Percent of Votes", "Number of Votes"])
+
+    # Write detailed output
+    csv_write.writerows(clean_output)
+
+    # Notify user that results were output
+    print("The results were saved into PyPollAnalysis.txt.")
 
 
