@@ -1,23 +1,22 @@
-# Import csv and os module
+# Import csv and os modules
 import csv
 import os
 
 # Identify file for analysis
 PyBank_file = os.path.join(".", "Resources", "budget_data.csv")
+# Identify file for output
 output_file = os.path.join(".", "analysis", "PyBankAnalysis.txt")
 
-# Defining function for analyzing records
-#def PyBank_Records(record):
-
-# Open csv file
+# OPEN CSV FILE
 with open(PyBank_file, 'r') as csvfile:
 
-    # Read csv file
+    # READ CSV FILE
     csv_read = csv.reader(csvfile, delimiter=',')
     
     # Take out title row in file
     csv_title = next(csv_read)
 
+    # Initialize variables
     total_amount = 0
     avg_change = 0
     greatest_increase = 0
@@ -25,20 +24,22 @@ with open(PyBank_file, 'r') as csvfile:
     increase_date = ""
     loss_date = ""
 
- # Define lists for dates, amounts & profit change by month
+    # Define lists for dates, amounts & profit change by month
     dates = []
     amount = []
     profit_change_by_month = []
 
+
     # Loop through the file to create separate lists
     for row in csv_read:
 
-    # append lists with each row's value
+    # Append lists with each row's value
         dates.append(row[0])
         amount.append(row[1])
 
-    # Find total months: length of 'dates' list    
+    # Find TOTAL MONTHS: length of 'dates' list    
     total_months = len(list(dates))
+
 
     # Loop through 'amount' list to find first and last values
     for _ in amount:
@@ -50,14 +51,19 @@ with open(PyBank_file, 'r') as csvfile:
         # Calculate changes in Profit/Losses
         change = last_amount - first_amount
 
-        # Find average of changes in Profit/Losses
+        # Find AVERAGE OF CHANGES in Profit/Losses
         avg_change = change / (total_months - 1)
+
+        # Round average change to 2 decimal places
+        rounded_avg_change = round(avg_change, 2)
   
-   # Find net total amount of Profit/Losses by looping through and adding each value
+
+   # Find NET TOTAL AMOUNT of Profit/Losses by looping through and adding each value
     for x in range(len(amount)):
         total_amount += int(amount[x])
 
-    # Find profit change by month by looping through
+
+    # Find profit change by month by looping through 'amount' list
     for index in range(len(amount)):
 
     # Set current month equal to current index
@@ -72,34 +78,46 @@ with open(PyBank_file, 'r') as csvfile:
         # Set current month equal to 0 (resetting for next row)
         current_month = 0
 
-        # Find greatest increase in profits over period
+        # Find GREATEST INCREASE IN PROFITS over period
         greatest_increase = max(profit_change_by_month)
 
-        # Find greatest increase in losses over period
+        # Find GREATEST INCREASE IN LOSSES over period
         greatest_losses = min(profit_change_by_month)
 
-    for row in csv_read:
-        if greatest_increase == row[1]:
-            increase_date = row[0]
-        if greatest_losses == row[1]:
-            loss_date = row[0]    
 
-        # Print findings
+    # Loop through list to find indexes of values
+    for index in range(len(profit_change_by_month)):
+
+        # Find profit index
+        if greatest_increase == profit_change_by_month[index]:
+            profit_index = index
+
+        # Find losses index
+        if greatest_losses == profit_change_by_month[index]:
+            loss_index = index
+    
+    # Find DATES that correspond with the profit/loss values
+    profit_date = dates[profit_index]
+    loss_date = dates[loss_index]
+
+
+# OUTPUT RESULTS
+
+     # Print findings for user in terminal
     print("FINCANCIAL ANALYSIS:")
     print("--------------------")
     print(f"Total Months: {total_months} months")
     print(f"Net Total Amount: ${total_amount}")
-    print(f"Average Change: ${avg_change}")
-    print(f"Greatest Increase in Profits: {greatest_increase}")
-    print(f"Greatest Increase in Losses: {greatest_losses}")
-    
-    print(f"Greatest Increase in Profits: {increase_date}, ${greatest_increase}")
+    print(f"Average Change: ${rounded_avg_change}")
+    print(f"Greatest Increase in Profits: {profit_date}, ${greatest_increase}")
     print(f"Greatest Increase in Losses: {loss_date}, ${greatest_losses}")
   
+# Define descriptions for output
+descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Profit Date", "Greatest Increase in Losses", "Loss Date"]
+# Define output values
+output_values = [total_months, total_amount, rounded_avg_change, greatest_increase, profit_date, greatest_losses, loss_date]
 
-descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Greatest Increase in Losses"]
-output_values = [total_months, total_amount, avg_change, greatest_increase, greatest_losses]
-
+# Zip output values & descriptions together
 clean_output = zip(descriptions, output_values)
 
   # Write to output file
@@ -108,9 +126,12 @@ with open(output_file, 'w', newline = '') as new_csv:
     # Write ouput to a file
     csv_write = csv.writer(new_csv, delimiter=',')
 
+    # Write title row
     csv_write.writerow(["Financial Analysis"])
     
+    # Write all output rows
     csv_write.writerows(clean_output)
 
+    # Notify user that results were output
     print("The results were saved into PyBankAnalysis.txt.")
         
