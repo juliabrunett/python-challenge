@@ -22,6 +22,8 @@ with open(PyBank_file, 'r') as csvfile:
     avg_change = 0
     greatest_increase = 0
     greatest_losses = 0
+    increase_date = ""
+    loss_date = ""
 
  # Define lists for dates, amounts & profit change by month
     dates = []
@@ -76,25 +78,39 @@ with open(PyBank_file, 'r') as csvfile:
         # Find greatest increase in losses over period
         greatest_losses = min(profit_change_by_month)
 
+    for row in csv_read:
+        if greatest_increase == row[1]:
+            increase_date = row[0]
+        if greatest_losses == row[1]:
+            loss_date = row[0]    
+
         # Print findings
     print("FINCANCIAL ANALYSIS:")
     print("--------------------")
-    print(f"Total Months: {total_months}")
-    print(f"Total: {total_amount}")
-    print(f"Average Change: {avg_change}")
+    print(f"Total Months: {total_months} months")
+    print(f"Net Total Amount: ${total_amount}")
+    print(f"Average Change: ${avg_change}")
     print(f"Greatest Increase in Profits: {greatest_increase}")
     print(f"Greatest Increase in Losses: {greatest_losses}")
     
-    #print(f"Greatest Increase in Profits: {dates}, {greatest_increase}")
-    #print(f"Greatest Increase in Losses: {dates}, {greatest_losses}")
+    print(f"Greatest Increase in Profits: {increase_date}, ${greatest_increase}")
+    print(f"Greatest Increase in Losses: {loss_date}, ${greatest_losses}")
   
+
+descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Greatest Increase in Losses"]
+output_values = [total_months, total_amount, avg_change, greatest_increase, greatest_losses]
+
+clean_output = zip(descriptions, output_values)
+
   # Write to output file
 with open(output_file, 'w', newline = '') as new_csv:
 
     # Write ouput to a file
-    csv_write = csv.writer(new_csv, delimiters=',')
+    csv_write = csv.writer(new_csv, delimiter=',')
 
-    csv_write.writerow( )
+    csv_write.writerow(["Financial Analysis"])
     
-    for row in csv_write:
-        csv_write.writerow( )
+    csv_write.writerows(clean_output)
+
+    print("The results were saved into PyBankAnalysis.txt.")
+        
