@@ -123,6 +123,7 @@ with open(output_file, 'w', newline = '') as new_csv:
 
     # Write title row
     csv_write.writerow(["Financial Analysis"])
+    csv_write.writerow(["--------------------"])
     
     # Write all output rows
     csv_write.writerows(clean_output)
