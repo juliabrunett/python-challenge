@@ -24,7 +24,7 @@ with open(PyBank_file, 'r') as csvfile:
     increase_date = ""
     loss_date = ""
 
-    # Define lists for dates, amounts & profit change by month
+    # Create & define lists for dates, amounts & profit change by month
     dates = []
     amount = []
     profit_change_by_month = []
@@ -37,14 +37,17 @@ with open(PyBank_file, 'r') as csvfile:
         dates.append(row[0])
         amount.append(row[1])
 
-    # Find TOTAL MONTHS: length of 'dates' list    
+    # Find TOTAL MONTHS: length of 'dates' list (without title row)  
     total_months = len(list(dates))
 
 
-    # Loop through 'amount' list to find first and last values
-    for _ in amount:
+    # Loop through 'amount' list to find first and last values & add value to total amount
+    for x in range(len(amount)):
+    
+    # Find NET TOTAL AMOUNT of Profit/Losses by looping through and adding each value
+        total_amount += int(amount[x])
 
-    # Find first and last amounts in list
+    # Find first and last monthly amounts in 'amount' list
         first_amount = int(amount[0])
         last_amount = int(amount[total_months - 1])
 
@@ -56,36 +59,28 @@ with open(PyBank_file, 'r') as csvfile:
 
         # Round average change to 2 decimal places
         rounded_avg_change = round(avg_change, 2)
-  
-
-   # Find NET TOTAL AMOUNT of Profit/Losses by looping through and adding each value
-    for x in range(len(amount)):
-        total_amount += int(amount[x])
-
 
     # Find profit change by month by looping through 'amount' list
-    for index in range(len(amount)):
+        # Set current month equal to current index
+        current_month = int(amount[x])
 
-    # Set current month equal to current index
-        current_month = int(amount[index])
+        # Set previous month equal to previous index (set for next row)
+        previous_month = int(amount[x - 1])
 
-    # Set previous month equal to previous index (set for next row)
-        previous_month = int(amount[index - 1])
-
-        # Add values to a new list to hold changes
+        # Add values to a new 'profit change' list to hold monthly changes
         profit_change_by_month.append(current_month - previous_month)
 
         # Set current month equal to 0 (resetting for next row)
         current_month = 0
 
-        # Find GREATEST INCREASE IN PROFITS over period
-        greatest_increase = max(profit_change_by_month)
+    # Find GREATEST INCREASE IN PROFITS over period
+    greatest_increase = max(profit_change_by_month)
 
-        # Find GREATEST INCREASE IN LOSSES over period
-        greatest_losses = min(profit_change_by_month)
+    # Find GREATEST INCREASE IN LOSSES over period
+    greatest_losses = min(profit_change_by_month)
 
 
-    # Loop through list to find indexes of values
+    # Loop through 'profit change' list to find indexes of values
     for index in range(len(profit_change_by_month)):
 
         # Find profit index
@@ -96,7 +91,7 @@ with open(PyBank_file, 'r') as csvfile:
         if greatest_losses == profit_change_by_month[index]:
             loss_index = index
     
-    # Find DATES that correspond with the profit/loss values
+    # Find DATES that correspond with the profit/loss values (from 'dates' list)
     profit_date = dates[profit_index]
     loss_date = dates[loss_index]
 
