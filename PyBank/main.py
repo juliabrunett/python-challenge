@@ -107,8 +107,18 @@ with open(PyBank_file, 'r') as csvfile:
     print(f"Greatest Increase in Profits: {profit_date}, ${greatest_increase}")
     print(f"Greatest Increase in Losses: {loss_date}, ${greatest_losses}")
   
+# Dictionary for output?
+#output_dict = {"Total Months": total_months, 
+    #"Net Total Amount": total_amount, 
+    #"Averange Change": rounded_avg_change, 
+    #"Greatest Increase in Profits": greatest_increase, 
+    #"Greatest Increase Profit Month": profit_date,
+    #"Greatest Increase in Losses": greatest_losses, 
+    #"Greatest Losses Month": loss_date
+#}
+
 # Define descriptions for output
-descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Profit Date", "Greatest Increase in Losses", "Loss Date"]
+descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Greatest Profit Month", "Greatest Increase in Losses", "Greatest Loss Month"]
 # Define output values
 output_values = [total_months, total_amount, rounded_avg_change, greatest_increase, profit_date, greatest_losses, loss_date]
 
@@ -126,6 +136,7 @@ with open(output_file, 'w', newline = '') as new_csv:
     
     # Write all output rows
     csv_write.writerows(clean_output)
+    #csv_write.writerows(output_dict[])
 
     # Notify user that results were output
     print("The results were saved into PyBankAnalysis.txt.")
