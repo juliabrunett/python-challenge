@@ -128,7 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.DS_Store
 /.DS_Store
-PyBank/.DS_Store
-PyPoll/.DS_Store
-Resources/.DS_Store
+*/.DS_Store
