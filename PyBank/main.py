@@ -21,7 +21,7 @@ with open(PyBank_file, 'r') as csvfile:
     avg_change = 0
     greatest_increase = 0
     greatest_losses = 0
-    increase_date = ""
+    profit_date = ""
     loss_date = ""
 
     # Create & define lists for dates, amounts & profit change by month
@@ -108,7 +108,7 @@ with open(PyBank_file, 'r') as csvfile:
     print(f"Greatest Increase in Losses: {loss_date}, ${greatest_losses}")
   
 # Define descriptions for output
-descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Profit Date", "Greatest Increase in Losses", "Loss Date"]
+descriptions = ["Total Months", "Net Total Amount", "Average Change", "Greatest Increase in Profits", "Greatest Profit Month", "Greatest Increase in Losses", "Greatest Loss Month"]
 # Define output values
 output_values = [total_months, total_amount, rounded_avg_change, greatest_increase, profit_date, greatest_losses, loss_date]
 
@@ -123,10 +123,10 @@ with open(output_file, 'w', newline = '') as new_csv:
 
     # Write title row
     csv_write.writerow(["Financial Analysis"])
+    csv_write.writerow(["--------------------"])
     
     # Write all output rows
     csv_write.writerows(clean_output)
 
     # Notify user that results were output
     print("The results were saved into PyBankAnalysis.txt.")
-        

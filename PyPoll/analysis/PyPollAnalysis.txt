@@ -1,8 +1,13 @@
-Summary Election Results
+Summary Election Results:
+--------------------------
 Total Votes,3521001
 Winning Candidate,Khan
-Detailed Election Results
-Candidate,Percent of Votes,Number of Votes
+--------------------------
+--------------------------
+Detailed Election Results:
+--------------------------
+Candidate, Percent of Votes, Number of Votes
+-------------------------------------------
 Khan,63.0,2218231
 Correy,20.0,704200
 Li,14.0,492940
